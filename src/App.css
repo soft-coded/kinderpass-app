@@ -1,4 +1,9 @@
+:root {
+  --app-bg-color: rgb(37, 37, 37);
+  --app-text-color: #fff;
+}
+
 body {
-  background-color: rgb(37, 37, 37);
-  color: #fff;
+  background-color: var(--app-bg-color);
+  color: var(--app-text-color);
 }
