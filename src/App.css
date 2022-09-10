@@ -37,6 +37,13 @@ input {
   margin: auto;
 }
 
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 .primary-btn {
   background-color: var(--color-primary);
 }

@@ -37,7 +37,7 @@ export default function LoginPage() {
           <Form className="login-form">
             <div className="form-group">
               <label htmlFor="email">Email</label>
-              <Field type="email" name="email" className="email" />
+              <Field type="email" name="email" id="email" />
               <ErrorMessage
                 name="email"
                 component="div"
@@ -46,7 +46,7 @@ export default function LoginPage() {
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <Field type="password" name="password" className="password" />
+              <Field type="password" name="password" id="password" />
               <ErrorMessage
                 name="password"
                 component="div"
