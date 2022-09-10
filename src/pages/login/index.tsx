@@ -1,38 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as yup from "yup";
 
 import "./login.css";
 
-interface FormValues {
-  email: string;
-  password: string;
-}
-
-interface ValidationValues {
-  email?: string;
-  password?: string;
-}
-
-function validate(values: FormValues) {
-  const errors: ValidationValues = {};
-
-  const email = values.email.trim();
-  const password = values.password.trim();
-
-  if (!email) {
-    errors.email = "Email is required";
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
-    errors.email = "Invalid email address";
-  }
-
-  if (!password) {
-    errors.password = "Password is required";
-  } else if (password.length < 5) {
-    errors.password = "Password should have at least 5 characters";
-  }
-
-  return errors;
-}
+const validationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .trim()
+    .required("Email is required")
+    .email("Invalid email"),
+  password: yup
+    .string()
+    .trim()
+    .required("Password is required")
+    .min(5, "At least 5 characters"),
+});
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -42,7 +25,7 @@ export default function LoginPage() {
       <h1>Log In</h1>
       <Formik
         initialValues={{ email: "", password: "" }}
-        validate={validate}
+        validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(() => {
             setSubmitting(false);
