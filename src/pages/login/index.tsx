@@ -1,7 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 
-import "./login.css";
 import { useAppDispatch } from "../../store/index";
 import { authActions } from "../../store/auth-slice";
 

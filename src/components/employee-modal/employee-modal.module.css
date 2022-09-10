@@ -1,0 +1,10 @@
+.employee-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: 10;
+  background-color: rgb(47, 47, 47);
+  padding: 30px;
+  border-radius: 10px;
+}

@@ -6,6 +6,7 @@ import HomePage from "./pages/home";
 import LoginPage from "./pages/login";
 import SignupPage from "./pages/signup";
 import NavBar from "./components/navbar";
+import EmployeeModal from "./components/employee-modal";
 import { useAppSelector, useAppDispatch } from "./store/index";
 import { authActions } from "./store/auth-slice";
 
@@ -24,6 +25,7 @@ function App() {
   ) : (
     <main className="app-root dynamic-full-screen">
       <NavBar />
+      <EmployeeModal />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />

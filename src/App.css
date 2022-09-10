@@ -44,10 +44,52 @@ input {
   text-align: center;
 }
 
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 5;
+}
+
 .primary-btn {
   background-color: var(--color-primary);
 }
 
 .secondary-btn {
   background-color: var(--color-secondary);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 1.1rem;
+}
+
+form .form-group input {
+  padding: 7px;
+}
+
+form .form-group .error-container {
+  color: rgb(255, 74, 74);
+  font-size: 0.9rem;
+}
+
+form button[type="submit"] {
+  align-self: center;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+}
+
+form button[type="submit"]:disabled {
+  cursor: not-allowed;
+  color: rgb(184, 184, 184);
+  background-color: #265c6e;
 }
