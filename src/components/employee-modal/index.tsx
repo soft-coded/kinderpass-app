@@ -1,3 +1,4 @@
+import { useState, useCallback } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 
@@ -5,6 +6,7 @@ import classes from "./employee-modal.module.css";
 import { employeeModalActions } from "../../store/employee-modal-slice";
 import { useAppSelector, useAppDispatch } from "../../store";
 import { EmployeeDetails } from "../../types";
+import { addEmployee } from "../../api/db";
 
 const validationSchema = yup.object().shape({
   empId: yup.string().trim().required("Required"),
@@ -23,7 +25,9 @@ const validationSchema = yup.object().shape({
 
 export default function EmployeeModal() {
   const employeeDetails = useAppSelector((state) => state.employeeModal);
+  const managerEmail = useAppSelector((state) => state.auth.email);
   const dispatch = useAppDispatch();
+  const [formError, setFormError] = useState<string | null>(null);
 
   const initialValues: EmployeeDetails = {
     empId: employeeDetails.empId || "",
@@ -35,25 +39,33 @@ export default function EmployeeModal() {
     dateOfBirth: employeeDetails.dateOfBirth || "",
   };
 
+  // prevent function recreation
+  const handleModalClose = useCallback(() => {
+    dispatch(employeeModalActions.hideModal());
+  }, [dispatch]);
+
   return (
     <>
       <div className="backdrop" />
       <div className={classes["employee-modal"]}>
         <header>
           <h2>Employee Details</h2>
-          <h2
-            className={classes["close"]}
-            onClick={() => dispatch(employeeModalActions.hideModal())}
-          >
+          <h2 className={classes["close"]} onClick={handleModalClose}>
             &#10006;
           </h2>
         </header>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            setSubmitting(false);
-            dispatch(employeeModalActions.hideModal());
+          onSubmit={async (values, { setSubmitting }) => {
+            try {
+              const valuesToSend = { ...values, managerEmail: managerEmail! };
+              await addEmployee(valuesToSend);
+              dispatch(employeeModalActions.hideModal());
+            } catch (err: any) {
+              setFormError(err.message);
+              setSubmitting(false);
+            }
           }}
         >
           {({ isSubmitting, isValid, dirty }) => (
@@ -121,12 +133,13 @@ export default function EmployeeModal() {
                   className="error-container"
                 />
               </div>
+              {formError && <div className="form-error">{formError}</div>}
               <button
                 type="submit"
                 className="primary-btn"
                 disabled={!dirty || isSubmitting || !isValid}
               >
-                Add employee
+                {isSubmitting ? "Adding..." : "Add employee"}
               </button>
             </Form>
           )}

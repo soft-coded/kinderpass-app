@@ -10,6 +10,6 @@ export async function addManager(values: MangerDetails) {
 
 export async function addEmployee(values: EmployeeDetails) {
   // do not forget to pass the managerEmail along with the values
-  const docRef = await addDoc(collection(db, "managers"), values);
+  const docRef = await addDoc(collection(db, "employees"), values);
   return docRef;
 }
