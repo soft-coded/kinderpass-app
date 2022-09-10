@@ -14,7 +14,7 @@ interface ValidationValues {
 }
 
 function validate(values: FormValues) {
-  const errors: ValidationValues = { email: "", password: "" };
+  const errors: ValidationValues = {};
 
   const email = values.email.trim();
   const password = values.password.trim();
@@ -23,16 +23,12 @@ function validate(values: FormValues) {
     errors.email = "Email is required";
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
     errors.email = "Invalid email address";
-  } else {
-    delete errors.email;
   }
 
   if (!password) {
     errors.password = "Password is required";
   } else if (password.length < 5) {
     errors.password = "Password should have at least 5 characters";
-  } else {
-    delete errors.password;
   }
 
   return errors;
