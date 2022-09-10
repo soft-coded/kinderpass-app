@@ -3,7 +3,7 @@ import clsx from "clsx";
 
 import classes from "./navbar.module.css";
 import { useAppSelector, useAppDispatch } from "../../store/index";
-import { authActions } from "../../store/authSlice";
+import { authActions } from "../../store/auth-slice";
 
 export default function NavBar() {
   const { isAuthenticated: isAuthed } = useAppSelector((state) => state.auth);

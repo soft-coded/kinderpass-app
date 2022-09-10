@@ -3,7 +3,7 @@ import * as yup from "yup";
 
 import "./login.css";
 import { useAppDispatch } from "../../store/index";
-import { authActions } from "../../store/authSlice";
+import { authActions } from "../../store/auth-slice";
 
 const validationSchema = yup.object().shape({
   email: yup

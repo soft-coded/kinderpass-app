@@ -7,7 +7,7 @@ import LoginPage from "./pages/login";
 import SignupPage from "./pages/signup";
 import NavBar from "./components/navbar";
 import { useAppSelector, useAppDispatch } from "./store/index";
-import { authActions } from "./store/authSlice";
+import { authActions } from "./store/auth-slice";
 
 function App() {
   const authStatus = useAppSelector((state) => state.auth.status);

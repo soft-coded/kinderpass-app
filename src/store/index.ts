@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 
-import authReducer from "./authSlice";
-import employeeModalReducer from "./employeeModalSlice";
+import authReducer from "./auth-slice";
+import employeeModalReducer from "./employee-modal-slice";
 
 export const store = configureStore({
   reducer: { auth: authReducer, employeeModal: employeeModalReducer },
