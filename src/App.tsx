@@ -12,6 +12,7 @@ import { authActions } from "./store/auth-slice";
 
 function App() {
   const authStatus = useAppSelector((state) => state.auth.status);
+  const employeeModal = useAppSelector((state) => state.employeeModal);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -25,7 +26,7 @@ function App() {
   ) : (
     <main className="app-root dynamic-full-screen">
       <NavBar />
-      <EmployeeModal />
+      {employeeModal.showModal && <EmployeeModal />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />

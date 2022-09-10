@@ -7,4 +7,20 @@
   background-color: rgb(47, 47, 47);
   padding: 30px;
   border-radius: 10px;
+  min-width: 50vw;
+  max-width: 75vw;
+  min-height: 50vh;
+  max-height: 85vh;
+  overflow: auto;
+}
+
+.employee-modal header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.employee-modal .close {
+  cursor: pointer;
+  color: rgb(192, 192, 192);
 }
