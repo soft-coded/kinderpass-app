@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface EmployeeDetails {
   empId?: string;
@@ -22,9 +22,8 @@ const employeeModalSlice = createSlice({
   name: "employee-modal",
   initialState,
   reducers: {
-    showModal(state, action) {
-      state = { ...action.payload }; // assuming all the correct values are passed
-      state.showModal = true;
+    showModal(state, action: PayloadAction<EmployeeDetails>) {
+      state = { ...action.payload, showModal: true }; // assuming all the correct values are passed
     },
     hideModal(state) {
       state = { showModal: false };
