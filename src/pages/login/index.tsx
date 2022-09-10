@@ -1,8 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 
 import "./login.css";
+import { useAppDispatch } from "../../store/index";
+import { authActions } from "../../store/authSlice";
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -18,7 +19,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default function LoginPage() {
-  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   return (
     <div className="container">
@@ -26,11 +27,8 @@ export default function LoginPage() {
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={validationSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            setSubmitting(false);
-            navigate("/");
-          }, 1000);
+        onSubmit={(values) => {
+          dispatch(authActions.login({ email: values.email }));
         }}
       >
         {({ isSubmitting, dirty, isValid }) => (
