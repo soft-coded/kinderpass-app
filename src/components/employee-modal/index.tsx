@@ -2,11 +2,9 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 
 import classes from "./employee-modal.module.css";
-import {
-  EmployeeDetails,
-  employeeModalActions,
-} from "../../store/employee-modal-slice";
-import { useAppSelector, useAppDispatch } from "../../store/index";
+import { employeeModalActions } from "../../store/employee-modal-slice";
+import { useAppSelector, useAppDispatch } from "../../store";
+import { EmployeeDetails } from "../../types";
 
 const validationSchema = yup.object().shape({
   empId: yup.string().trim().required("Required"),

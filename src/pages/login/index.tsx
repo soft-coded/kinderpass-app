@@ -1,8 +1,8 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 
-import { useAppDispatch } from "../../store/index";
-import { authActions } from "../../store/auth-slice";
+import { useAppDispatch, useAppSelector } from "../../store/index";
+import { loginThunk } from "../../store/auth-slice";
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -14,11 +14,12 @@ const validationSchema = yup.object().shape({
     .string()
     .trim()
     .required("Password is required")
-    .min(5, "At least 5 characters"),
+    .min(6, "At least 6 characters"),
 });
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
+  const formError = useAppSelector((state) => state.auth.error);
 
   return (
     <div className="container">
@@ -26,8 +27,8 @@ export default function LoginPage() {
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          dispatch(authActions.login({ email: values.email }));
+        onSubmit={async (values) => {
+          await dispatch(loginThunk(values));
         }}
       >
         {({ isSubmitting, dirty, isValid }) => (
@@ -50,6 +51,7 @@ export default function LoginPage() {
                 className="error-container"
               />
             </div>
+            {formError && <div className="form-error">{formError}</div>}
             <button
               type="submit"
               className="primary-btn"

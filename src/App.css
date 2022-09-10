@@ -66,6 +66,12 @@ form {
   padding: 20px 0;
 }
 
+form .form-error {
+  width: 100%;
+  text-align: center;
+  color: rgb(255, 74, 74);
+}
+
 form .form-group {
   display: flex;
   flex-direction: column;

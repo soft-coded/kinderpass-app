@@ -1,14 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface EmployeeDetails {
-  empId?: string;
-  firstName?: string;
-  lastName?: string;
-  address?: string;
-  dateOfBirth?: string;
-  mobileNumber?: string;
-  city?: string;
-}
+import { EmployeeDetails } from "../types";
 
 interface ModalValues extends EmployeeDetails {
   showModal: boolean;

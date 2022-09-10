@@ -1,6 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
+
+import { useAppDispatch, useAppSelector } from "../../store";
+import { signupThunk } from "../../store/auth-slice";
 
 /*
 form values: {
@@ -34,14 +36,15 @@ const validationSchema = yup.object().shape({
     .string()
     .trim()
     .required("Password is required")
-    .min(5, "At least 5 characters"),
+    .min(6, "At least 6 characters"),
   address: yup.string().trim().required("Address is required"),
   dateOfBirth: yup.string().trim().required("Date of birth is required"),
   company: yup.string().trim().required("Company is required"),
 });
 
-export default function LoginPage() {
-  const navigate = useNavigate();
+export default function SignupPage() {
+  const dispatch = useAppDispatch();
+  const formError = useAppSelector((state) => state.auth.error);
 
   return (
     <div className="container">
@@ -57,11 +60,10 @@ export default function LoginPage() {
           company: "",
         }}
         validationSchema={validationSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            setSubmitting(false);
-            navigate("/");
-          }, 1000);
+        onSubmit={async (values, { setSubmitting }) => {
+          // no try-catch needed as redux thunk will handle that
+          await dispatch(signupThunk(values));
+          setSubmitting(false);
         }}
       >
         {({ isSubmitting, dirty, isValid }) => (
@@ -129,6 +131,7 @@ export default function LoginPage() {
                 className="error-container"
               />
             </div>
+            {formError && <div className="form-error">{formError}</div>}
             <button
               type="submit"
               className="primary-btn"
