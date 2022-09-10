@@ -60,10 +60,9 @@ export default function SignupPage() {
           company: "",
         }}
         validationSchema={validationSchema}
-        onSubmit={async (values, { setSubmitting }) => {
+        onSubmit={async (values) => {
           // no try-catch needed as redux thunk will handle that
           await dispatch(signupThunk(values));
-          setSubmitting(false);
         }}
       >
         {({ isSubmitting, dirty, isValid }) => (

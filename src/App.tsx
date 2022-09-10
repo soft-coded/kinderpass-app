@@ -8,6 +8,7 @@ import SignupPage from "./pages/signup";
 import NavBar from "./components/navbar";
 import EmployeeModal from "./components/employee-modal";
 import { useAppSelector, useAppDispatch } from "./store/index";
+import { authClient } from "./api";
 import { authActions } from "./store/auth-slice";
 
 function App() {
@@ -16,7 +17,11 @@ function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(authActions.loginOnLoad());
+    const unsubscribe = authClient.onAuthStateChanged((user) => {
+      dispatch(authActions.loginOnLoad({ email: user?.email }));
+    });
+
+    return unsubscribe;
   }, [dispatch]);
 
   return authStatus === "fetching" ? (
