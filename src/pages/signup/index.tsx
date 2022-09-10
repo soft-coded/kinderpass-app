@@ -1,3 +1,7 @@
 export default function SignupPage() {
-  return <h1>Sign up page</h1>;
+  return (
+    <div className="container">
+      <h1>Sign up page</h1>
+    </div>
+  );
 }
