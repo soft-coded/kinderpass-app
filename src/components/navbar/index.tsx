@@ -3,15 +3,15 @@ import clsx from "clsx";
 
 import classes from "./navbar.module.css";
 import { useAppSelector, useAppDispatch } from "../../store/index";
-import { authActions } from "../../store/auth-slice";
+import { logoutThunk } from "../../store/auth-slice";
 import { employeeModalActions } from "../../store/employee-modal-slice";
 
 export default function NavBar() {
   const { isAuthenticated: isAuthed } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  function handleLogout() {
-    dispatch(authActions.logout());
+  async function handleLogout() {
+    await dispatch(logoutThunk());
   }
 
   return (
