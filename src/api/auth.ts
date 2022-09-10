@@ -12,18 +12,20 @@ import { addManager } from "./db";
 
 export async function loginManager(email: string, password: string) {
   await setPersistence(authClient, browserLocalPersistence);
-  await signInWithEmailAndPassword(authClient, email, password);
+  return await signInWithEmailAndPassword(authClient, email, password);
 }
 
 export async function signupManger(values: MangerDetails) {
   await setPersistence(authClient, browserLocalPersistence);
-  await createUserWithEmailAndPassword(
+  const user = await createUserWithEmailAndPassword(
     authClient,
     values.email,
-    values.password
+    values.password!
   );
 
+  delete values.password;
   await addManager(values);
+  return user;
 }
 
 export async function logout() {

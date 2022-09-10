@@ -1,6 +1,6 @@
 export interface MangerDetails {
   email: string;
-  password: string;
+  password?: string;
   firstName: string;
   lastName: string;
   address: string;

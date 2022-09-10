@@ -17,11 +17,14 @@ function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    // log user in if it exists in the localStorage
+    // fetching handled automatically by firebase
     const unsubscribe = authClient.onAuthStateChanged((user) => {
-      dispatch(authActions.loginOnLoad({ email: user?.email }));
+      dispatch(authActions.login({ email: user?.email }));
     });
 
-    return unsubscribe;
+    // unsubscribe because no longer needed after fetching
+    unsubscribe();
   }, [dispatch]);
 
   return authStatus === "fetching" ? (

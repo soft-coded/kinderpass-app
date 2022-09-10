@@ -21,7 +21,7 @@ export const loginThunk = createAsyncThunk(
   "auth/login",
   async (payload: { email: string; password: string }) => {
     const res = await loginManager(payload.email, payload.password);
-    return res;
+    return { email: res.user.email };
   }
 );
 
@@ -29,36 +29,34 @@ export const signupThunk = createAsyncThunk(
   "auth/signup",
   async (payload: MangerDetails) => {
     const res = await signupManger(payload);
-    return res;
+    return { email: res.user.email };
   }
 );
 
 export const logoutThunk = createAsyncThunk("auth/logout", async () => {
-  const res = await logout();
-  return res;
+  await logout();
 });
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login() {
-      window.location.href = "/";
-    },
-    logout() {
-      window.location.href = "/";
-    },
-    loginOnLoad(state, action) {
-      if (action.payload?.email) {
+    login(state, action) {
+      if (action.payload?.email != null) {
         state.email = action.payload.email;
         state.isAuthenticated = true;
       }
       state.status = null;
     },
+    logout(state) {
+      state.email = null;
+      state.isAuthenticated = false;
+      state.status = null;
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(loginThunk.fulfilled, () => {
-      authSlice.caseReducers.login();
+    builder.addCase(loginThunk.fulfilled, (state, action) => {
+      authSlice.caseReducers.login(state, action);
     });
 
     builder.addCase(loginThunk.pending, (state) => {
@@ -71,8 +69,8 @@ const authSlice = createSlice({
       state.status = null;
     });
 
-    builder.addCase(signupThunk.fulfilled, () => {
-      authSlice.caseReducers.login();
+    builder.addCase(signupThunk.fulfilled, (state, action) => {
+      authSlice.caseReducers.login(state, action);
     });
 
     builder.addCase(signupThunk.pending, (state) => {
@@ -85,8 +83,8 @@ const authSlice = createSlice({
       state.status = null;
     });
 
-    builder.addCase(logoutThunk.fulfilled, () => {
-      authSlice.caseReducers.logout();
+    builder.addCase(logoutThunk.fulfilled, (state) => {
+      authSlice.caseReducers.logout(state);
     });
 
     builder.addCase(logoutThunk.pending, (state) => {

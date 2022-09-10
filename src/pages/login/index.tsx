@@ -1,7 +1,9 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 
-import { useAppDispatch, useAppSelector } from "../../store/index";
+import { useAppDispatch } from "../../store/index";
 import { loginThunk } from "../../store/auth-slice";
 
 const validationSchema = yup.object().shape({
@@ -18,8 +20,9 @@ const validationSchema = yup.object().shape({
 });
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const formError = useAppSelector((state) => state.auth.error);
+  const [formError, setFormError] = useState<string | null>(null);
 
   return (
     <div className="container">
@@ -27,8 +30,15 @@ export default function LoginPage() {
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={validationSchema}
-        onSubmit={async (values) => {
-          await dispatch(loginThunk(values));
+        onSubmit={async (values, { setSubmitting }) => {
+          try {
+            setFormError(null);
+            await dispatch(loginThunk(values)).unwrap();
+            navigate("/");
+          } catch (err: any) {
+            setFormError(err.message);
+            setSubmitting(false);
+          }
         }}
       >
         {({ isSubmitting, dirty, isValid }) => (
@@ -57,7 +67,7 @@ export default function LoginPage() {
               className="primary-btn"
               disabled={!dirty || isSubmitting || !isValid}
             >
-              Log In
+              {isSubmitting ? "Logging In..." : "Log In"}
             </button>
           </Form>
         )}

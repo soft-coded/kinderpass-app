@@ -7,7 +7,7 @@ import { logoutThunk } from "../../store/auth-slice";
 import { employeeModalActions } from "../../store/employee-modal-slice";
 
 export default function NavBar() {
-  const { isAuthenticated: isAuthed } = useAppSelector((state) => state.auth);
+  const isAuthed = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
 
   async function handleLogout() {

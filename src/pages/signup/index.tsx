@@ -1,7 +1,9 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 
-import { useAppDispatch, useAppSelector } from "../../store";
+import { useAppDispatch } from "../../store";
 import { signupThunk } from "../../store/auth-slice";
 
 /*
@@ -43,8 +45,9 @@ const validationSchema = yup.object().shape({
 });
 
 export default function SignupPage() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const formError = useAppSelector((state) => state.auth.error);
+  const [formError, setFormError] = useState<string | null>(null);
 
   return (
     <div className="container">
@@ -60,9 +63,15 @@ export default function SignupPage() {
           company: "",
         }}
         validationSchema={validationSchema}
-        onSubmit={async (values) => {
-          // no try-catch needed as redux thunk will handle that
-          await dispatch(signupThunk(values));
+        onSubmit={async (values, { setSubmitting }) => {
+          try {
+            setFormError(null);
+            await dispatch(signupThunk(values)).unwrap();
+            navigate("/");
+          } catch (err: any) {
+            setFormError(err.message);
+            setSubmitting(false);
+          }
         }}
       >
         {({ isSubmitting, dirty, isValid }) => (
@@ -136,7 +145,7 @@ export default function SignupPage() {
               className="primary-btn"
               disabled={!dirty || isSubmitting || !isValid}
             >
-              Log In
+              {isSubmitting ? "Signing Up..." : "Sign Up"}
             </button>
           </Form>
         )}
