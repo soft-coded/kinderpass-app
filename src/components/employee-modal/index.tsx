@@ -59,9 +59,15 @@ export default function EmployeeModal() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting }) => {
             try {
+              const confirmed = window.confirm(
+                "Are you sure you want to add this employee?"
+              );
+              if (!confirmed) return;
+              setFormError(null);
               const valuesToSend = { ...values, managerEmail: managerEmail! };
               await addEmployee(valuesToSend);
               dispatch(employeeModalActions.hideModal());
+              window.location.href = "/";
             } catch (err: any) {
               setFormError(err.message);
               setSubmitting(false);

@@ -1,0 +1,43 @@
+.employee-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 0;
+  border-bottom: 1px solid white;
+}
+
+.employee-card:last-of-type {
+  border: none;
+}
+
+.employee-card header {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+
+.employee-card header .buttons {
+  display: flex;
+  gap: 20px;
+  font-weight: 600;
+}
+
+.employee-card header span {
+  cursor: pointer;
+}
+
+.employee-card .delete {
+  color: rgb(255, 47, 47);
+}
+
+.employee-card ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.employee-card ul span {
+  font-weight: 600;
+  font-size: 1.1rem;
+}

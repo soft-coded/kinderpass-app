@@ -9,6 +9,7 @@ export interface MangerDetails {
 }
 
 export interface EmployeeDetails {
+  documentId?: string;
   empId?: string;
   firstName?: string;
   lastName?: string;
