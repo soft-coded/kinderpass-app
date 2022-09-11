@@ -60,7 +60,7 @@ export default function EmployeeModal() {
           onSubmit={async (values, { setSubmitting }) => {
             try {
               const confirmed = window.confirm(
-                "Are you sure you want to add this employee?"
+                "Are you sure you want to save this employee?"
               );
               if (!confirmed) return;
               setFormError(null);
