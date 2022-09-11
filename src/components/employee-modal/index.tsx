@@ -6,7 +6,7 @@ import classes from "./employee-modal.module.css";
 import { employeeModalActions } from "../../store/employee-modal-slice";
 import { useAppSelector, useAppDispatch } from "../../store";
 import { EmployeeDetails } from "../../types";
-import { addEmployee } from "../../api/db";
+import { addEmployee, updateEmployee } from "../../api/db";
 
 const validationSchema = yup.object().shape({
   empId: yup.string().trim().required("Required"),
@@ -59,14 +59,22 @@ export default function EmployeeModal() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting }) => {
             try {
+              setFormError(null);
+              if (!managerEmail) throw new Error("Log in to continue");
+
               const confirmed = window.confirm(
                 "Are you sure you want to save this employee?"
               );
               if (!confirmed) return;
-              setFormError(null);
-              const valuesToSend = { ...values, managerEmail: managerEmail! };
-              await addEmployee(valuesToSend);
-              dispatch(employeeModalActions.hideModal());
+
+              const valuesToSend = { ...values, managerEmail };
+              if (employeeDetails.mode === "add") {
+                await addEmployee(valuesToSend);
+              } else {
+                await updateEmployee(valuesToSend);
+              }
+
+              handleModalClose();
               window.location.href = "/";
             } catch (err: any) {
               setFormError(err.message);
@@ -76,15 +84,18 @@ export default function EmployeeModal() {
         >
           {({ isSubmitting, isValid, dirty }) => (
             <Form className={classes["employee-form"]}>
-              <div className="form-group">
-                <label htmlFor="emp-id">Employee ID</label>
-                <Field name="empId" id="emp-id" />
-                <ErrorMessage
-                  name="empId"
-                  component="div"
-                  className="error-container"
-                />
-              </div>
+              {/* Employee ID cannot be edited */}
+              {employeeDetails.mode === "add" && (
+                <div className="form-group">
+                  <label htmlFor="emp-id">Employee ID</label>
+                  <Field name="empId" id="emp-id" />
+                  <ErrorMessage
+                    name="empId"
+                    component="div"
+                    className="error-container"
+                  />
+                </div>
+              )}
               <div className="form-group">
                 <label htmlFor="emp-first-name">First name</label>
                 <Field name="firstName" id="emp-first-name" />
@@ -145,7 +156,7 @@ export default function EmployeeModal() {
                 className="primary-btn"
                 disabled={!dirty || isSubmitting || !isValid}
               >
-                {isSubmitting ? "Adding..." : "Add employee"}
+                {isSubmitting ? "Saving..." : "Save employee"}
               </button>
             </Form>
           )}

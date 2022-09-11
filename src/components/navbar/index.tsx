@@ -24,7 +24,9 @@ export default function NavBar() {
           <>
             <button
               className="primary-btn"
-              onClick={() => dispatch(employeeModalActions.showModal({}))}
+              onClick={() =>
+                dispatch(employeeModalActions.showModal({ mode: "add" }))
+              }
             >
               Add employee
             </button>

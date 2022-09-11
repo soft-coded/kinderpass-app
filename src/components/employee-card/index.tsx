@@ -1,19 +1,27 @@
 import classes from "./employee-card.module.css";
 import { EmployeeDetails } from "../../types";
 import { deleteEmployee } from "../../api/db";
+import { useAppDispatch } from "../../store";
+import { employeeModalActions } from "../../store/employee-modal-slice";
 
 export default function EmployeeCard(props: EmployeeDetails) {
+  const dispatch = useAppDispatch();
+
   async function handleDelete() {
     try {
       const confirmed = window.confirm(
         "Are you sure you want to delete this employee?"
       );
       if (!confirmed) return;
-      await deleteEmployee(props.documentId!);
+      await deleteEmployee(props.empId!);
       window.location.href = "/";
     } catch (err: any) {
       alert(err.message);
     }
+  }
+
+  async function handleEdit() {
+    dispatch(employeeModalActions.showModal({ ...props, mode: "edit" }));
   }
 
   return (
@@ -23,7 +31,9 @@ export default function EmployeeCard(props: EmployeeDetails) {
           {props.firstName} {props.lastName}
         </h2>
         <div className={classes["buttons"]}>
-          <span className={classes["edit"]}>EDIT EMPLOYEE</span>
+          <span className={classes["edit"]} onClick={handleEdit}>
+            EDIT EMPLOYEE
+          </span>
           <span className={classes["delete"]} onClick={handleDelete}>
             DELETE EMPLOYEE
           </span>
